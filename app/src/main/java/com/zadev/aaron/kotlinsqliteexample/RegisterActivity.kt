@@ -1,9 +1,9 @@
 package com.zadev.aaron.kotlinsqliteexample
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.TextInputEditText
+import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Patterns
 import android.view.View
@@ -11,7 +11,6 @@ import android.widget.Button
 import android.widget.Toast
 import com.zadev.aaron.kotlinsqliteexample.models.Account
 import com.zadev.aaron.kotlinsqliteexample.models.Holder
-import java.util.regex.Pattern
 
 class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -66,7 +65,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    fun initUi () {
+    private fun initUi () {
 
         txtName = findViewById(R.id.txtName)
         txtEmail = findViewById(R.id.txtEmailReg)

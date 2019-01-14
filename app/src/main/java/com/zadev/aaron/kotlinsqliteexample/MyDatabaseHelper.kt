@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.zadev.aaron.kotlinsqliteexample.models.Account
 import com.zadev.aaron.kotlinsqliteexample.models.Holder
+import com.zadev.aaron.kotlinsqliteexample.models.HolderHaveAccount
 
 class MyDatabaseHelper private constructor (val c: Context?) :SQLiteOpenHelper(c, "MyDatabase.db", null, 1) {
 
@@ -91,15 +92,17 @@ class MyDatabaseHelper private constructor (val c: Context?) :SQLiteOpenHelper(c
         contentHave.put("ID_HOLDER", lastHolder())
         contentHave.put("ID_ACCOUNT", lastAccount())
 
+        myDatabase?.insert("HAVE", null, contentHave)
+
     }
 
-    fun lastAccount () : Int? {
+    fun lastAccount () : Int {
 
         query = "SELECT ID_ACCOUNT FROM ACCOUNT ORDER BY ID_ACCOUNT DESC LIMIT 1;"
 
         myDatabase = readableDatabase
 
-        var accountID : Int ? = 1
+        var accountID = 0
 
         cursor = myDatabase?.rawQuery(query, null)
 
@@ -107,7 +110,7 @@ class MyDatabaseHelper private constructor (val c: Context?) :SQLiteOpenHelper(c
 
             do{
 
-               accountID = cursor!!.getInt(0)+1
+               accountID = cursor!!.getInt(0)
 
             }while (cursor!!.moveToNext())
 
@@ -123,7 +126,7 @@ class MyDatabaseHelper private constructor (val c: Context?) :SQLiteOpenHelper(c
 
         myDatabase = readableDatabase
 
-        var holderID = 1
+        var holderID = 0
 
         cursor = myDatabase?.rawQuery(query, null)
 
@@ -131,7 +134,7 @@ class MyDatabaseHelper private constructor (val c: Context?) :SQLiteOpenHelper(c
 
             do{
 
-                holderID = cursor!!.getInt(0)+1
+                holderID = cursor!!.getInt(0)
 
             }while (cursor!!.moveToNext())
 
@@ -146,7 +149,7 @@ class MyDatabaseHelper private constructor (val c: Context?) :SQLiteOpenHelper(c
 
         myDatabase = readableDatabase
 
-        query = "SELECT EMAIL FROM HOLDER WHERE EMAIL LIKE '${h.Email}'"
+        query = "SELECT EMAIL FROM HOLDER WHERE EMAIL LIKE '${h.Email}';"
 
         cursor = myDatabase?.rawQuery(query, null)
 
@@ -154,7 +157,31 @@ class MyDatabaseHelper private constructor (val c: Context?) :SQLiteOpenHelper(c
 
     }
 
+    fun doLogin (h: Holder) : HolderHaveAccount {
 
+        myDatabase = readableDatabase
 
+        query = "SELECT ID_HOLDER, NAME, ID_ACCOUNT " +
+                "FROM HOLDER INNER JOIN HAVE USING (ID_HOLDER) " +
+                "INNER JOIN ACCOUNT USING(ID_ACCOUNT) WHERE EMAIL LIKE '${h.Email}' AND PASS LIKE '${h.Pass}'"
+
+        cursor = myDatabase?.rawQuery(query, null)
+
+        var holder = HolderHaveAccount(0, "", 0)
+
+        if(cursor!!.moveToFirst()){
+
+            do {
+
+                holder.IDHolder = cursor!!.getInt(0)
+                holder.Name = cursor!!.getString(1)
+                holder.IDAccount = cursor!!.getInt(2)
+
+            }while (cursor!!.moveToNext())
+
+        }
+
+        return holder
+    }
 
 }
