@@ -7,4 +7,86 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtHeader" android:layout_marginTop="10dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" tools:text="Bienvenido de nuevo"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption" android:textSize="18sp"
+            android:textAlignment="center"/>
+    <TextView
+            android:text="¿Que Operacion deseas realizar?"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView" android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtHeader" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="151dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="151dp" android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/colorAccent" android:textSize="15sp"/>
+    <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rbGroup"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="center" android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView" android:layout_marginStart="20dp">
+        <RadioButton
+                android:text="Consultar Movimientos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/rbOne" android:layout_weight="1"
+                android:layout_marginBottom="5dp" android:layout_marginTop="5dp"/>
+        <RadioButton
+                android:text="Depositar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/rbTwo" android:layout_weight="1"
+                android:layout_marginTop="5dp" android:layout_marginBottom="5dp"/>
+        <RadioButton
+                android:text="Retirar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/rbThree" android:layout_weight="1"
+                android:layout_marginBottom="5dp" android:layout_marginTop="5dp"/>
+    </RadioGroup>
+    <Spinner
+            android:layout_width="125dp"
+            android:layout_height="40dp"
+            android:id="@+id/sprOne" android:layout_marginStart="18dp"
+            app:layout_constraintStart_toEndOf="@+id/rbGroup" android:layout_marginEnd="18dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/inputAmount" android:layout_marginTop="80dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="0.0"
+            android:entries="@array/operations"/>
+    <android.support.design.widget.TextInputLayout
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp" app:layout_constraintStart_toEndOf="@+id/rbGroup"
+            android:layout_marginEnd="18dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0" android:id="@+id/inputAmount"
+            app:layout_constraintTop_toBottomOf="@+id/sprOne" android:layout_marginTop="15dp">
+
+        <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Monto" android:id="@+id/txtAmount" android:inputType="numberDecimal"/>
+    </android.support.design.widget.TextInputLayout>
+    <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="255dp"
+            android:id="@+id/rvOne" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="5dp"
+            app:layout_constraintTop_toBottomOf="@+id/rbGroup" android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    <TextView
+            android:text="Saldo Total: 1000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTotalAmount"
+            app:layout_constraintTop_toBottomOf="@+id/inputAmount" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.9"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/rvOne"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" android:textColor="@color/colorAccent"
+            android:textSize="15sp" android:layout_marginTop="5dp" android:textAlignment="center"/>
 </android.support.constraint.ConstraintLayout>

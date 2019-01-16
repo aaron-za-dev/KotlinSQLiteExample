@@ -2,22 +2,16 @@ package com.zadev.aaron.kotlinsqliteexample
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.design.widget.TextInputEditText
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Patterns
 import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import com.zadev.aaron.kotlinsqliteexample.models.Account
 import com.zadev.aaron.kotlinsqliteexample.models.Holder
+import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : AppCompatActivity(), View.OnClickListener {
-
-    private var btnRegister : Button? = null
-    private var txtName : TextInputEditText? = null
-    private var txtEmail: TextInputEditText? = null
-    private var txtPass: TextInputEditText? = null
 
     private var myHelper : MyDatabaseHelper? = null
 
@@ -25,7 +19,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        initUi()
+        btnRegister.setOnClickListener(this)
 
         myHelper = MyDatabaseHelper.getInstance(this)
 
@@ -33,15 +27,15 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
 
-        if(!TextUtils.equals(txtName?.text, "")
-            && Patterns.EMAIL_ADDRESS.matcher(txtEmail?.text).matches() && !TextUtils.equals(txtPass?.text, "")){
+        if(!TextUtils.equals(txtNameReg.text, "")
+            && Patterns.EMAIL_ADDRESS.matcher(txtEmailReg.text).matches() && !TextUtils.equals(txtPassReg.text, "")){
 
-            val holder = Holder(0, txtName?.text.toString(), txtEmail?.text.toString(), txtPass?.text.toString())
+            val holder = Holder(0, txtNameReg.text.toString(), txtEmailReg.text.toString(), txtPassReg.text.toString())
             val account = Account(0, 0f)
 
             if (myHelper!!.checkHolderIfExists(holder)){
 
-                txtEmail?.error = "Introduzca otro correo"
+                txtEmailReg.error = "Introduzca otro correo"
                 Snackbar.make(v!!, "El Correo Electronico ya se encuentra registrado", Snackbar.LENGTH_SHORT).show()
 
             }
@@ -58,20 +52,10 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         }
         else{
 
-            txtName?.error = "Campo Requerido"
-            txtPass?.error = "Campo Requerido"
-            txtEmail?.error = "Correo Invalido"
+            txtNameReg.error = "Campo Requerido"
+            txtPassReg.error = "Campo Requerido"
+            txtEmailReg.error = "Correo Invalido"
         }
-
-    }
-
-    private fun initUi () {
-
-        txtName = findViewById(R.id.txtName)
-        txtEmail = findViewById(R.id.txtEmailReg)
-        txtPass = findViewById(R.id.txtPassReg)
-        btnRegister = findViewById(R.id.btnRegister)
-        btnRegister?.setOnClickListener(this)
 
     }
 

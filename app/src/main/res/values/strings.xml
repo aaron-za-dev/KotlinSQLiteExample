@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">KotlinSQLiteExample</string>
+
+    <string-array name="operations">
+        <item> Todas</item>
+        <item>Depositos</item>
+        <item>Retiros</item>
+    </string-array>
+
 </resources>

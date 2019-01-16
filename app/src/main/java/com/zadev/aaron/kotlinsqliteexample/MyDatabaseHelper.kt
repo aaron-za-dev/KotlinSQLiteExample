@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import com.zadev.aaron.kotlinsqliteexample.models.Account
 import com.zadev.aaron.kotlinsqliteexample.models.Holder
 import com.zadev.aaron.kotlinsqliteexample.models.HolderHaveAccount
+import com.zadev.aaron.kotlinsqliteexample.models.Operation
 
 class MyDatabaseHelper private constructor (val c: Context?) :SQLiteOpenHelper(c, "MyDatabase.db", null, 1) {
 
@@ -55,7 +56,7 @@ class MyDatabaseHelper private constructor (val c: Context?) :SQLiteOpenHelper(c
         query = "CREATE TABLE MAKE (ID_ACCOUNT INTEGER NOT NULL REFERENCES ACCOUNT (ID_ACCOUNT), ID_OPERATION INTEGER NOT NULL REFERENCES OPERATIONS (ID_OPERATION));"
         db?.execSQL(query)
 
-        query = "INSERT INTO TYPE_OPS (ID_TYPE_OP, NAME_OP) VALUES (1, 'Retiro'), (2, 'Deposito');"
+        query = "INSERT INTO TYPE_OPS (ID_TYPE_OP, NAME_OP) VALUES (1, 'Deposito'), (2, 'Retiro');"
         db?.execSQL(query)
 
     }
@@ -144,6 +145,30 @@ class MyDatabaseHelper private constructor (val c: Context?) :SQLiteOpenHelper(c
 
     }
 
+    fun lastOperation () : Int {
+
+        query = "SELECT ID_OPERATION FROM OPERATIONS ORDER BY ID_OPERATION DESC LIMIT 1;"
+
+        myDatabase = readableDatabase
+
+        var operationID = 1
+
+        cursor = myDatabase?.rawQuery(query, null)
+
+        if(cursor!!.moveToFirst()){
+
+            do{
+
+                operationID = cursor!!.getInt(0)+1
+
+            }while (cursor!!.moveToNext())
+
+        }
+
+        return  operationID
+
+    }
+
 
     fun checkHolderIfExists (h: Holder): Boolean {
 
@@ -183,5 +208,58 @@ class MyDatabaseHelper private constructor (val c: Context?) :SQLiteOpenHelper(c
 
         return holder
     }
+
+    fun totalAmount (idAccount : Int) : Float {
+
+        myDatabase = readableDatabase
+
+        query = "SELECT TOTAL_AMOUNT FROM ACCOUNT WHERE ID_ACCOUNT = ${idAccount}"
+
+        cursor = myDatabase?.rawQuery(query, null)
+
+        var totalAmount = 0f
+
+        if(cursor!!.moveToNext()){
+
+            do {
+
+                totalAmount = cursor!!.getFloat(0)
+
+            }while (cursor!!.moveToNext())
+
+        }
+
+        return totalAmount
+
+    }
+
+    fun addOperation (idAccount : Int, newAmount: Float, op : Operation ) {
+
+        myDatabase = writableDatabase
+
+        var addOperation  = ContentValues()
+        addOperation.put("AMOUNT_OP", op.AmountOperation)
+        addOperation.put("ID_TYPE_OP", op.IDType)
+
+        myDatabase?.insert("OPERATIONS", null, addOperation)
+
+        var makeOp = ContentValues()
+        makeOp.put("ID_ACCOUNT", idAccount)
+        makeOp.put("ID_OPERATION", op.IDOperation)
+
+        myDatabase?.insert("MAKE", null, makeOp)
+
+        var updateAccount = ContentValues ()
+        updateAccount.put("TOTAL_AMOUNT", newAmount)
+
+        myDatabase?.update("ACCOUNT", updateAccount, "ID_ACCOUNT = $idAccount", null)
+
+    }
+
+    /*fun allOperationsByAccount (idAccount : Int ) : ArrayList<Operation> {
+
+
+
+    }*/
 
 }
