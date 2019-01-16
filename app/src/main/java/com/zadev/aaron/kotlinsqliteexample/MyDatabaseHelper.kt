@@ -5,10 +5,9 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.zadev.aaron.kotlinsqliteexample.models.Account
-import com.zadev.aaron.kotlinsqliteexample.models.Holder
-import com.zadev.aaron.kotlinsqliteexample.models.HolderHaveAccount
-import com.zadev.aaron.kotlinsqliteexample.models.Operation
+import com.zadev.aaron.kotlinsqliteexample.models.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class MyDatabaseHelper private constructor (val c: Context?) :SQLiteOpenHelper(c, "MyDatabase.db", null, 1) {
 
@@ -219,7 +218,7 @@ class MyDatabaseHelper private constructor (val c: Context?) :SQLiteOpenHelper(c
 
         var totalAmount = 0f
 
-        if(cursor!!.moveToNext()){
+        if(cursor!!.moveToFirst()){
 
             do {
 
@@ -256,10 +255,39 @@ class MyDatabaseHelper private constructor (val c: Context?) :SQLiteOpenHelper(c
 
     }
 
-    /*fun allOperationsByAccount (idAccount : Int ) : ArrayList<Operation> {
+    fun allOperationsByAccount (idAccount : Int ) : ArrayList<ItemOperation> {
+
+        var allOps : ArrayList<ItemOperation> = ArrayList()
+
+        myDatabase = readableDatabase
+
+        query = "SELECT ID_ACCOUNT, DATE_OP, ID_TYPE_OP, ID_OPERATION, AMOUNT_OP  " +
+                "FROM ACCOUNT INNER JOIN MAKE USING (ID_ACCOUNT) INNER JOIN OPERATIONS USING (ID_OPERATION) " +
+                "WHERE ID_ACCOUNT = $idAccount"
+
+        cursor = myDatabase?.rawQuery(query, null)
+
+        if(cursor!!.moveToFirst()){
+
+            do{
+
+                allOps?.add(ItemOperation(
+                    cursor!!.getInt(0),
+                    cursor!!.getString(1).substring(0,10),
+                    cursor!!.getInt(2),
+                    cursor!!.getInt(3),
+                    cursor!!.getFloat(4)
+                ))
+
+
+            }while (cursor!!.moveToNext())
+
+        }
+
+        return allOps
+    }
 
 
 
-    }*/
 
 }

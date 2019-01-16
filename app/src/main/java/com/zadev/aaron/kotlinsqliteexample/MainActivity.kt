@@ -3,8 +3,10 @@ package com.zadev.aaron.kotlinsqliteexample
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
 import android.widget.Toast
+import com.zadev.aaron.kotlinsqliteexample.models.ItemOperation
 import com.zadev.aaron.kotlinsqliteexample.models.Operation
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -17,6 +19,8 @@ class MainActivity : AppCompatActivity() {
     private var accountID = 0
     private var totalAmount = 0f
     private var lastOperation = 0
+
+    private var operations : ArrayList<ItemOperation> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -40,13 +44,47 @@ class MainActivity : AppCompatActivity() {
 
     private fun initUi () {
 
+        //Configuring the recyclerView
+
+        val viewManager = LinearLayoutManager(context)
+        val adapter = OperationAdapter()
+
+        rvOne.apply {
+
+            setHasFixedSize(true)
+
+            layoutManager = viewManager
+
+            setAdapter(adapter)
+        }
+
+
+        // Setting CheckedChange listener to RadioGrouo
         rbGroup?.setOnCheckedChangeListener { group, checkedId ->
 
             when(checkedId){
 
                 R.id.rbOne -> {
 
-                    Toast.makeText(group.context, "Uno", Toast.LENGTH_SHORT).show()
+                    when (sprOne.selectedItemPosition){
+
+                        0 -> {
+                            //Toast.makeText(context, "Posicion 1", Toast.LENGTH_SHORT).show()
+                            allOperations(accountID, adapter)
+                            rbOne.isChecked = false
+                        }
+                        1 -> {
+                            //Toast.makeText(context, "Posicion 2", Toast.LENGTH_SHORT).show()
+                            allPositiveOperations(accountID, adapter)
+                            rbOne.isChecked = false
+                        }
+                        2 -> {
+                            //Toast.makeText(context, "Posicion 3", Toast.LENGTH_SHORT).show()
+                            allNegativeOperations(accountID, adapter)
+                            rbOne.isChecked = false
+                        }
+
+                    }
 
                 }
                 R.id.rbTwo -> {
@@ -100,6 +138,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
     private fun checkTotalAmount (a: Int)  {
 
         totalAmount = myHelper?.totalAmount(a)!!
@@ -121,4 +160,38 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(context, "Saldo Actualizado", Toast.LENGTH_SHORT).show()
 
     }
+
+    private fun allOperations(idAccount: Int, adapter: OperationAdapter) {
+        if(operations.size == 0){
+           operations = myHelper?.allOperationsByAccount(idAccount)!!
+        }
+        adapter.setData(operations)
+    }
+
+    private fun allPositiveOperations (idAccount: Int, adapter: OperationAdapter){
+
+        if(operations.size == 0){
+
+            operations = myHelper?.allOperationsByAccount(idAccount)!!
+        }
+
+        var positiveOps = ArrayList (operations.filter { it.IDTypeOp == 1 })
+
+        adapter.setData(positiveOps)
+
+    }
+
+    private fun allNegativeOperations(idAccount: Int, adapter: OperationAdapter) {
+
+        if(operations.size == 0){
+
+            operations = myHelper?.allOperationsByAccount(idAccount)!!
+        }
+
+        var negativeOps = ArrayList(operations.filter { it.IDTypeOp == 2 })
+
+        adapter.setData(negativeOps)
+
+    }
 }
+

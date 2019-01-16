@@ -1,56 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="80dp">
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:elevation="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
 
     <ImageView
-        android:id="@+id/imgOperation"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="20dp"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+            android:id="@+id/imgOperation"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            app:srcCompat="@mipmap/ic_launcher_round" android:scaleType="centerCrop"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true" android:layout_alignParentBottom="true"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginEnd="25dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintVertical_bias="0.52"/>
 
     <TextView
-        android:id="@+id/txtIDOp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imgOperation"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="28dp"
-        android:layout_marginBottom="0dp"
-        android:text="Operacion N°:  " />
+            android:id="@+id/txtIDOp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imgOperation"
+            android:text="Operacion N°:  " android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="3dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toStartOf="@+id/imgOperation"
+            app:layout_constraintHorizontal_bias="0.018" android:layout_marginTop="3dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtIDAccount"/>
 
     <TextView
-        android:id="@+id/txtTypeOp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imgOperation"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="93dp"
-        android:text="Tipo de Operacion: " />
+            android:id="@+id/txtTypeOp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="Tipo de Operacion: Retiro" android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_alignParentStart="true" android:layout_alignTop="@+id/imgOperation"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="3dp" android:layout_marginTop="3dp"
+            app:layout_constraintTop_toBottomOf="@+id/txtIDOp" android:layout_marginBottom="3dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
-        android:id="@+id/txtAmountOp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/txtIDOp"
-        android:layout_alignBottom="@+id/imgOperation"
-        android:layout_marginStart="122dp"
-        android:layout_marginBottom="-3dp"
-        android:text="Monto: $200" />
+            android:id="@+id/txtAmountOp"
+            android:layout_width="97dp"
+            android:layout_height="19dp"
+            android:layout_alignStart="@+id/txtIDOp"
+            android:layout_alignBottom="@+id/imgOperation"
+            android:text="Monto: $200" android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_toStartOf="@+id/imgOperation"
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtTypeOp" android:layout_marginStart="8dp"
+            app:layout_constraintHorizontal_bias="0.098" android:layout_marginBottom="3dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
-        android:id="@+id/txtIDAccount"
-        android:layout_width="92dp"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/txtIDOp"
-        android:layout_alignTop="@+id/imgOperation"
-        android:text="N° Cuenta:" />
-</RelativeLayout>
+            android:id="@+id/txtIDAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="N° Cuenta: 100" android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_alignParentStart="true" android:layout_alignParentTop="true"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/txtDate" android:layout_marginStart="3dp"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.163"
+            android:layout_marginTop="3dp" app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+            android:id="@+id/txtDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/txtIDAccount"
+            android:text="Fecha: 01/01/2019" android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_toEndOf="@+id/txtIDAccount"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="100dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="3dp"
+            app:layout_constraintTop_toTopOf="parent"/>
+</android.support.constraint.ConstraintLayout>
